@@ -9,6 +9,7 @@ export async function orderController(req: Request, res: Response) {
         categoryId: req.query.categoryId as string,
         subCategoryId: req.query.subCategoryId as string,
         orderId: req.query.orderId as string,
+        orderIdMatch: req.query.orderIdMatch as "exact" | "contains",
         minPrice: req.query.minPrice ? Number(req.query.minPrice) : undefined,
         maxPrice: req.query.maxPrice ? Number(req.query.maxPrice) : undefined,
         grade: req.query.grade as any,

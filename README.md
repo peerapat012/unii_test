@@ -81,9 +81,9 @@ Server runs on `http://localhost:3000`
 ## API Endpoints
 
 - `GET /api/orders/summary` - Get order summary with filters
-- `GET /api/categories` - Get all categories
+- `GET /api/categories` - Get categories (with optional subCategoryId filter)
 
-### Query Parameters
+### Query Parameters (Orders)
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
@@ -92,8 +92,16 @@ Server runs on `http://localhost:3000`
 | categoryId | string | Filter by category ID |
 | subCategoryId | string | Filter by subcategory ID |
 | orderId | string | Search by order ID |
+| orderIdMatch | string | Order ID match type: "exact" or "contains" (default: "contains") |
 | minPrice | number | Minimum price filter |
 | maxPrice | number | Maximum price filter |
 | grade | string | Filter by grade (A, B, C, D) |
 | page | number | Page number (default: 1) |
 | limit | number | Items per page (default: 20) |
+
+### Query Parameters (Categories)
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| categoryId | string | Filter by category ID |
+| subCategoryId | string | Filter subcategories by category ID |

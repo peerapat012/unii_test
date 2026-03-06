@@ -10,6 +10,7 @@ export async function getSummary(query: SummaryQuery) {
         categoryId,
         subCategoryId,
         orderId,
+        orderIdMatch = "contains",
         minPrice,
         maxPrice,
         grade,
@@ -17,9 +18,11 @@ export async function getSummary(query: SummaryQuery) {
         limit = 20
     } = query
 
-    const where: Prisma.OrderWhereInput = {
+    const orderWhere: Prisma.OrderWhereInput = {
         ...(orderId && {
-            orderId: { contains: orderId },
+            orderId: orderIdMatch === "exact"
+                ? { equals: orderId }
+                : { contains: orderId },
         }),
 
         ...(startDate || endDate) && {
@@ -28,6 +31,10 @@ export async function getSummary(query: SummaryQuery) {
                 ...(endDate && { lte: new Date(endDate) }),
             },
         },
+    };
+
+    const where: Prisma.OrderWhereInput = {
+        ...orderWhere,
 
         ...((categoryId || subCategoryId) && {
             productItems: {
@@ -83,7 +90,7 @@ export async function getSummary(query: SummaryQuery) {
         prisma.order.count({ where }),
         prisma.productItem.aggregate({
             where: {
-                order: where,
+                order: orderWhere,
                 ...(grade && { grade: grade as Grade }),
                 ...((categoryId || subCategoryId)) && {
                     product: {

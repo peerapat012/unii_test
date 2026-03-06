@@ -4,6 +4,7 @@ export interface SummaryQuery {
     categoryId?: string
     subCategoryId?: string
     orderId?: string
+    orderIdMatch?: "exact" | "contains"
     minPrice?: number
     maxPrice?: number
     grade?: "A" | "B" | "C" | "D"
