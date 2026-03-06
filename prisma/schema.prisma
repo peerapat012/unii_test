@@ -1,0 +1,98 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id         String @id @default(uuid())
+  categoryId String @unique
+  name       String
+
+  subCategories SubCategory[]
+  products      Product[]
+
+  @@index([categoryId])
+}
+
+model SubCategory {
+  id            String @id @default(uuid())
+  subCategoryId String @unique
+  name          String
+
+  categoryId String
+  category   Category  @relation(fields: [categoryId], references: [id])
+  products   Product[]
+
+  @@index([subCategoryId])
+  @@index([categoryId])
+}
+
+model Order {
+  id                String        @id @default(uuid())
+  orderId           String        @unique
+  product           Product[]
+  orderFinishedDate DateTime
+  orderFinishedTime String
+  productItems      ProductItem[]
+
+  @@index([orderId])
+  @@index([orderFinishedDate])
+  @@index([orderFinishedTime])
+}
+
+model Product {
+  id String @id @default(uuid())
+
+  categoryFK String   @map("categoryFK")
+  category   Category @relation(fields: [categoryFK], references: [id])
+  categoryId String
+
+  productItems ProductItem[]
+
+  subCategoryFK String      @map("subCategoryFK")
+  subCategory   SubCategory @relation(fields: [subCategoryFK], references: [id])
+  subCategoryId String
+
+  orderId String? @map("orderId")
+  order   Order?  @relation(fields: [orderId], references: [id])
+
+  @@index([categoryFK])
+  @@index([orderId])
+  @@index([subCategoryFK])
+}
+
+model ProductItem {
+  id String @id @default(uuid())
+
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id])
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+
+  grade    Grade
+  price    Float
+  quantity Int
+  total    Float
+
+  @@index([orderId])
+  @@index([productId])
+  @@index([grade])
+}
+
+enum Grade {
+  A
+  B
+  C
+  D
+}
