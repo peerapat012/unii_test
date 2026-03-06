@@ -98,10 +98,3 @@ Server runs on `http://localhost:3000`
 | grade | string | Filter by grade (A, B, C, D) |
 | page | number | Page number (default: 1) |
 | limit | number | Items per page (default: 20) |
-
-### Query Parameters (Categories)
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| categoryId | string | Filter by category ID |
-| subCategoryId | string | Filter subcategories by category ID |
