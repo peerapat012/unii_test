@@ -26,18 +26,5 @@ services:
       - postgres
     restart: unless-stopped
 
-    api:
-      build:
-        context: .
-        dockerfile: Dockerfile
-      container_name: order_summary_api
-      environment:
-        DATABASE_URL: postgresql://admin:admin@postgres:5432/order_summary_db
-      ports:
-        - "3000:3000"
-      depends_on:
-        - postgres
-      restart: unless-stopped
-
 volumes:
   postgres_data:
